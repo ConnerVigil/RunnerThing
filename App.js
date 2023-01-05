@@ -6,6 +6,11 @@ import * as Location from 'expo-location';
 export default function App() {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [initialFocus, setInitialFocus] = useState(true);
+
+  setTimeout(() => {
+    setInitialFocus(false);
+  }, 3000);
 
   useEffect(() => {
     (async () => {
@@ -26,19 +31,13 @@ export default function App() {
     text = JSON.stringify(location);
   }
 
-  console.log(location.coords.latitude);
-
   return (
     <View style={styles.container}>
       <MapView
-        initialRegion={{
-          latitude: location.coords.latitude ?? 0,
-          longitude: location.coords.longitude ?? 0,
-          latitudeDelta: 0.00005,
-          longitudeDelta: 0.0021,
-        }}
         style={styles.map}
-        showsUserLocation={true}></MapView>
+        showsUserLocation={true}
+        followsUserLocation={initialFocus}
+        ></MapView>
       <Text style={styles.errorText}>{text}</Text>
     </View>
   );
